@@ -23,7 +23,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "serve-examples": "node examples/server.mjs"
   },
   "repository": {
     "type": "git",
