@@ -3,6 +3,8 @@ Opepicons
 
 A tiny library for generating opepen identicons.
 
+![Opepicons](examples/sample.png)
+
 Install
 -----
 
