@@ -5,15 +5,17 @@
     background: #f1f1f1;
   }
 
-  img, canvas {
+  .icon {
     display: inline-block;
     margin: 10px;
+    width: 160px;
+    height: 160px;
   }
   </style>
 </head>
 <body>
   <script type="module">
-    import { createIcon } from '../dist/index.js';
+    import { renderSVG } from '../dist/index.js';
 
     const addresses = [
       '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
@@ -35,13 +37,11 @@
 
     for(let i = 0; i < addresses.length; i++) {
       const seed = addresses[i].toLowerCase();
-
-      const canvas = createIcon({
-        seed,
-        size: 160,
-      });
-
-      document.body.appendChild(canvas)
+      const svg = renderSVG({ seed });
+      const div = document.createElement('div');
+      div.className = 'icon';
+      div.innerHTML = svg;
+      document.body.appendChild(div);
     }
   </script>
 </body>

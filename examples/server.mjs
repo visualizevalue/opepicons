@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { join, extname } from 'node:path';
+import { renderSVG } from '../dist/index.js';
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -15,6 +16,22 @@ const MIME_TYPES = {
 const root = new URL('..', import.meta.url).pathname;
 
 createServer(async (req, res) => {
+  // Dynamic SVG endpoint: /icon/<seed>.svg?size=160
+  const iconMatch = req.url.match(/^\/icon\/([^?]+?)(?:\.svg)?(?:\?(.*))?$/);
+  if (iconMatch) {
+    const seed = decodeURIComponent(iconMatch[1]);
+    const params = new URLSearchParams(iconMatch[2] || '');
+    const size = parseInt(params.get('size')) || undefined;
+
+    const svg = renderSVG({ seed, size });
+    res.writeHead(200, {
+      'Content-Type': 'image/svg+xml',
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    });
+    res.end(svg);
+    return;
+  }
+
   const url = req.url === '/' ? '/examples/random-samples.html' : req.url;
   const filePath = join(root, url);
 
