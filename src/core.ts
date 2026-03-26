@@ -107,7 +107,7 @@ export function createImageData(size: number, rand: () => number): number[] {
 
 /**
  * Prepare all deterministic data for an opepen icon.
- * Both the canvas and SVG renderers use this.
+ * Used by the SVG renderer.
  */
 export function prepare(opts: OpepenOptions): PreparedIcon {
   const seed = opts.seed || Math.floor(Math.random() * Math.pow(10, 16)).toString(16);

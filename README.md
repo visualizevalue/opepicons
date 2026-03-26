@@ -1,53 +1,53 @@
 Opepicons
 ========
 
-A tiny library for generating opepen identicons.
+A tiny library for generating opepen identicons as SVGs.
 
 ![Opepicons](examples/sample.png)
 
 Install
 -----
 
-    npm i @visualizevalue/opepicons
+    pnpm i @visualizevalue/opepicons
 
 
-```typescript
-import { createIcon } from '@visualizevalue/opepicons';
-
-const icon = createIcon({ // All options are optional
-    seed: 'randstring', // seed used to generate icon data, default: random
-    color: '#dfe', // optional
-    bgcolor: '#aaa', // optional
-    size: 32, // width/height of the icon in pixels, default: 32
-});
-
-document.body.appendChild(icon); // icon is a canvas element
-```
-
-React
----
-
-```typescript
-import React from 'react';
-import { createIcon } from '@visualizevalue/opepicons';
-
-export const OpepenAvatar: React.FC<{ address: string; size: number }> = ({ address, size }) => {
-  const canvas = createIcon({
-    seed: address,
-    size,
-  });
-
-  return (
-    <img src={canvas.toDataURL()} alt="Opepen Avatar" />
-  );
-};
-```
-
-Notes
+Usage
 -----
 
-Because the default Opepen grid is 8x8, it is better to use a size that is divisible by 8.
+```typescript
+import { renderSVG } from '@visualizevalue/opepicons';
 
+const svg = renderSVG({  // All options are optional
+    seed: 'randstring',  // seed used to generate icon data, default: random
+    size: 160,           // width/height of the SVG in pixels, default: responsive
+    color: '#dfe',       // foreground color, default: generated from seed
+    bgcolor: '#aaa',     // background color, default: generated from seed
+    spotcolor: '#f00',   // spot color, default: generated from seed
+});
+
+// svg is a string: '<svg xmlns="http://www.w3.org/2000/svg" ...>...</svg>'
+```
+
+### Browser
+
+```typescript
+const div = document.createElement('div');
+div.innerHTML = renderSVG({ seed: '0x...', size: 160 });
+document.body.appendChild(div);
+```
+
+### Server
+
+```typescript
+import { renderSVG } from '@visualizevalue/opepicons';
+
+// Express / Hono / any HTTP server
+app.get('/icon/:seed.svg', (req, res) => {
+    const svg = renderSVG({ seed: req.params.seed, size: 160 });
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(svg);
+});
+```
 
 Build
 -----
